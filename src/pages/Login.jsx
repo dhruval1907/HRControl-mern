@@ -1,30 +1,31 @@
+// App.js - Example setup with routing
+import React from 'react';
+import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
+import LoginPage from './components/auth/LoginPage';
+import Dashboard from './components/dashboard/Dashboard'; // You'll create this
+
+const PrivateRoute = ({ children }) => {
+  const isAuthenticated = localStorage.getItem('hrms_auth') === 'true';
+  return isAuthenticated ? children : <Navigate to="/login" />;
+};
+
 const Login = () => {
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-100">
-      <div className="bg-white p-8 rounded-lg shadow-md w-80 space-y-4">
-        
-        <h1 className="text-2xl font-bold text-center bg-red-200 py-2">
-          HR Login
-        </h1>
-
-        <input
-          type="email"
-          placeholder="Email"
-          className="w-full border px-3 py-2 rounded"
+    <Router>
+      <Routes>
+        <Route path="/login" element={<LoginPage />} />
+        <Route path="/" element={<Navigate to="/login" />} />
+        <Route 
+          path="/dashboard" 
+          element={
+            <PrivateRoute>
+              <Dashboard />
+            </PrivateRoute>
+          } 
         />
-
-        <input
-          type="password"
-          placeholder="Password"
-          className="w-full border px-10 py-20 rounded"
-        />
-
-        <button className="w-full bg-blue-600 text-white py-2 rounded">
-          Login
-        </button>
-
-      </div>
-    </div>
+        {/* Add more protected routes as needed */}
+      </Routes>
+    </Router>
   );
 };
 
