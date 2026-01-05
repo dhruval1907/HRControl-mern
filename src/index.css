@@ -15,7 +15,7 @@ body {
   font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
 }
 
-$color-base: #404853;
+/* $color-base: #404853; */
 
 svg#robot {
   display: block;
@@ -229,7 +229,7 @@ body {
 }
 
 body {
-  background: $color-base;
+  /* background: $color-base; */
   font-family: 'Roboto Condensed', sans-serif;
 }
 

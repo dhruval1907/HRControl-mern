@@ -1,10 +1,10 @@
-// HRDashboard.jsx
 import React, { useState } from 'react';
-import { Link, Outlet, useLocation } from 'react-router-dom';
+import { Link, Outlet, useLocation, useNavigate } from 'react-router-dom';
 import { Users, DollarSign, Clock, Calendar, MapPin, Briefcase, StickyNote, TrendingUp, Building2, Home, Plus, Calculator, Download } from 'lucide-react';
 
 export default function HRDashboard() {
   const location = useLocation();
+  const navigate = useNavigate(); // Added useNavigate hook
   
   // Determine active tab based on current path
   const getActiveTab = () => {
@@ -41,6 +41,17 @@ export default function HRDashboard() {
       return location.pathname === path || location.pathname === '/';
     }
     return location.pathname.startsWith(path);
+  };
+
+  // Logout function
+  const handleLogout = () => {
+    // Clear any authentication data (if stored)
+    localStorage.removeItem('hrms_auth');
+    localStorage.removeItem('hrms_user');
+    localStorage.removeItem('hrms_role');
+    
+    // Redirect to login page (assuming login is at root '/')
+    navigate('/');
   };
 
   // Dashboard content (Home Page)
@@ -338,7 +349,9 @@ export default function HRDashboard() {
           <div style={{ fontSize: '14px', color: '#4b5563' }}>
             Email: <span style={{ fontWeight: '600', color: '#1f2937' }}>aadhiavi57@gmail.com</span>
           </div>
-          <button style={{ background: 'linear-gradient(to right, #ef4444, #dc2626)', color: 'white', padding: '10px 32px', borderRadius: '12px', fontWeight: '600', border: 'none', cursor: 'pointer', boxShadow: '0 4px 6px -1px rgba(239, 68, 68, 0.3)', transition: 'all 0.2s' }}
+          <button 
+            onClick={handleLogout} // Added onClick handler
+            style={{ background: 'linear-gradient(to right, #ef4444, #dc2626)', color: 'white', padding: '10px 32px', borderRadius: '12px', fontWeight: '600', border: 'none', cursor: 'pointer', boxShadow: '0 4px 6px -1px rgba(239, 68, 68, 0.3)', transition: 'all 0.2s' }}
             onMouseEnter={(e) => e.currentTarget.style.boxShadow = '0 10px 15px -3px rgba(239, 68, 68, 0.4)'}
             onMouseLeave={(e) => e.currentTarget.style.boxShadow = '0 4px 6px -1px rgba(239, 68, 68, 0.3)'}>
             Logout
