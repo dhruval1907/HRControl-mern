@@ -9,7 +9,7 @@ export default function HRDashboard() {
   ];
 
   const menuItems = [
-    { id: 'home', label: 'Home', icon: Home },
+    { id: 'home', label: 'Home', icon: Home,path : "/" },
     { id: 'employees', label: 'Employees', icon: Users },
     { id: 'salaries', label: 'Salaries', icon: DollarSign },
     { id: 'attendance', label: 'Attendance', icon: Clock },
