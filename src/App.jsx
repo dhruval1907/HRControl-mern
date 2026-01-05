@@ -9,6 +9,7 @@ import Payroll from "./pages/Payroll";
 import Holidays from "./pages/Holiday";
 import Sites from "./pages/Site";
 import DepartmentPage from "./pages/Department";
+import Notes from "./pages/Notes";
 
 function App() {
   return (
@@ -23,6 +24,7 @@ function App() {
         <Route path="/holiday" element={<Holidays />} />
         <Route path="/site" element={<Sites />} />
         <Route path="/department" element={<DepartmentPage />} />
+        <Route path="/notes" element={<Notes />} />
       </Routes>
   );
 }
