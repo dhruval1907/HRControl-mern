@@ -31,7 +31,7 @@ export default function Attendance() {
   const menuItems = [
     { id: 'home', label: 'Home', icon: Home, path: '/dashboard' },
     { id: 'employees', label: 'Employees', icon: Users, path: '/employee' },
-    { id: 'salaries', label: 'Salaries', icon: DollarSign, path: '/salaries' },
+    { id: 'salaries', label: 'Salaries', icon: DollarSign, path: '/salary' },
     { id: 'attendance', label: 'Attendance', icon: Clock, path: '/attendance' },
     { id: 'payroll', label: 'Payroll', icon: TrendingUp, path: '/payroll' },
     { id: 'holidays', label: 'Holidays', icon: Calendar, path: '/holidays' },
