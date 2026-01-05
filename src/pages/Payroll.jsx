@@ -40,7 +40,7 @@ export default function Payroll() {
     { id: 'payroll', label: 'Payroll', icon: TrendingUp, path: '/payroll' },
     { id: 'holidays', label: 'Holidays', icon: Calendar, path: '/holiday' },
     { id: 'sites', label: 'Sites', icon: MapPin, path: '/site' },
-    { id: 'departments', label: 'Departments', icon: Building2, path: '/departments' },
+    { id: 'departments', label: 'Departments', icon: Building2, path: '/department' },
     { id: 'notes', label: 'Notes', icon: StickyNote, path: '/notes' }
   ];
 
