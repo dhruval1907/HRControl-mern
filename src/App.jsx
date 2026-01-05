@@ -6,6 +6,8 @@ import Employee from "./pages/Employee";
 import Notfound from "./pages/Notfound";
 import Salaries from "./pages/Salary";
 import Payroll from "./pages/Payroll";
+import Holidays from "./pages/Holiday";
+import Sites from "./pages/Site";
 
 function App() {
   return (
@@ -17,6 +19,8 @@ function App() {
         <Route path="*" element={<Notfound />} />
         <Route path="/salary" element={<Salaries />} />
         <Route path="/payroll" element={<Payroll />} />
+        <Route path="/holiday" element={<Holidays />} />
+        <Route path="/site" element={<Sites />} />
       </Routes>
   );
 }

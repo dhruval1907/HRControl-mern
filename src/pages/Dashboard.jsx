@@ -29,8 +29,8 @@ export default function HRDashboard() {
     { id: 'salaries', label: 'Salaries', icon: DollarSign, path: '/salary' },
     { id: 'attendance', label: 'Attendance', icon: Clock, path: '/attendance' },
     { id: 'payroll', label: 'Payroll', icon: TrendingUp, path: '/payroll' },
-    { id: 'holidays', label: 'Holidays', icon: Calendar, path: '/holidays' },
-    { id: 'sites', label: 'Sites', icon: MapPin, path: '/sites' },
+    { id: 'holidays', label: 'Holidays', icon: Calendar, path: '/holiday' },
+    { id: 'sites', label: 'Sites', icon: MapPin, path: '/site' },
     { id: 'departments', label: 'Departments', icon: Building2, path: '/departments' },
     { id: 'notes', label: 'Notes', icon: StickyNote, path: '/notes' }
   ];
