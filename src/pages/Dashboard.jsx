@@ -348,7 +348,7 @@ export default function HRDashboard() {
         {/* Dashboard Content */}
         <div style={{ padding: '20px' }}>
           {location.pathname === '/dashboard' || location.pathname === '/' ? (
-            <Dashboard />
+            <DashboardContent />
           ) : (
             <Outlet />
           )}
