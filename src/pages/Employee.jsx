@@ -1,10 +1,9 @@
 import React, { useState } from 'react';
+import { Link, useNavigate } from 'react-router-dom'; // Added Link
 import { Calendar, Users, DollarSign, Clock, MapPin, Briefcase, StickyNote, Plus, Calculator, Download, TrendingUp, Building2, Home, Search, Filter, Edit2, Trash2, Eye, X } from 'lucide-react';
-import { useNavigate } from 'react-router-dom'; // Add this import
 
 export default function Employee() {
-  const navigate = useNavigate(); // Add this hook
-  const [activeTab, setActiveTab] = useState('employees');
+  const navigate = useNavigate();
   const [searchTerm, setSearchTerm] = useState('');
   const [filterDepartment, setFilterDepartment] = useState('all');
   const [showModal, setShowModal] = useState(false);
@@ -20,6 +19,37 @@ export default function Employee() {
     joinDate: '',
     address: ''
   });
+
+  // Get current path for active tab
+  const currentPath = window.location.pathname;
+  
+  // Determine active tab based on current path
+  const getActiveTab = () => {
+    if (currentPath.includes('/employee')) return 'employees';
+    if (currentPath.includes('/salaries')) return 'salaries';
+    if (currentPath.includes('/attendance')) return 'attendance';
+    if (currentPath.includes('/payroll')) return 'payroll';
+    if (currentPath.includes('/holidays')) return 'holidays';
+    if (currentPath.includes('/sites')) return 'sites';
+    if (currentPath.includes('/departments')) return 'departments';
+    if (currentPath.includes('/notes')) return 'notes';
+    return 'home';
+  };
+
+  const activeTab = getActiveTab();
+
+  // Menu items with proper routing
+  const menuItems = [
+    { id: 'home', label: 'Home', icon: Home, path: '/dashboard' },
+    { id: 'employees', label: 'Employees', icon: Users, path: '/employee' },
+    { id: 'salaries', label: 'Salaries', icon: DollarSign, path: '/salaries' },
+    { id: 'attendance', label: 'Attendance', icon: Clock, path: '/attendance' },
+    { id: 'payroll', label: 'Payroll', icon: TrendingUp, path: '/payroll' },
+    { id: 'holidays', label: 'Holidays', icon: Calendar, path: '/holidays' },
+    { id: 'sites', label: 'Sites', icon: MapPin, path: '/sites' },
+    { id: 'departments', label: 'Departments', icon: Building2, path: '/departments' },
+    { id: 'notes', label: 'Notes', icon: StickyNote, path: '/notes' }
+  ];
 
   // Logout function
   const handleLogout = () => {
@@ -40,18 +70,6 @@ export default function Employee() {
     { id: 7, name: 'Robert Miller', email: 'robert.m@company.com', phone: '+1 234 567 8907', department: 'Finance', position: 'Financial Analyst', salary: '$78,000', joinDate: '2023-01-30', address: '147 Birch Ct, Denver' },
     { id: 8, name: 'Lisa Anderson', email: 'lisa.anderson@company.com', phone: '+1 234 567 8908', department: 'Operations', position: 'Operations Manager', salary: '$82,000', joinDate: '2020-05-18', address: '258 Spruce Way, Miami' }
   ]);
-
-  const menuItems = [
-    { id: 'home', label: 'Home', icon: Home },
-    { id: 'employees', label: 'Employees', icon: Users },
-    { id: 'salaries', label: 'Salaries', icon: DollarSign },
-    { id: 'attendance', label: 'Attendance', icon: Clock },
-    { id: 'payroll', label: 'Payroll', icon: TrendingUp },
-    { id: 'holidays', label: 'Holidays', icon: Calendar },
-    { id: 'sites', label: 'Sites', icon: MapPin },
-    { id: 'departments', label: 'Departments', icon: Building2 },
-    { id: 'notes', label: 'Notes', icon: StickyNote }
-  ];
 
   const departments = ['Engineering', 'Marketing', 'Sales', 'HR', 'Design', 'Finance', 'Operations'];
 
@@ -122,6 +140,14 @@ export default function Employee() {
     }
   };
 
+  // Function to check if a menu item is active
+  const isActive = (path) => {
+    if (path === '/dashboard') {
+      return currentPath === path || currentPath === '/';
+    }
+    return currentPath.startsWith(path);
+  };
+
   return (
     <div style={{ display: 'flex', minHeight: '100vh', background: 'linear-gradient(to bottom right, #f9fafb, #f3f4f6)' }}>
       {/* Sidebar */}
@@ -147,10 +173,12 @@ export default function Employee() {
           <nav style={{ display: 'flex', flexDirection: 'column', gap: '4px' }}>
             {menuItems.map((item) => {
               const Icon = item.icon;
+              const active = isActive(item.path);
+              
               return (
-                <button
+                <Link
                   key={item.id}
-                  onClick={() => setActiveTab(item.id)}
+                  to={item.path}
                   style={{
                     width: '100%',
                     display: 'flex',
@@ -159,26 +187,27 @@ export default function Employee() {
                     padding: '12px 16px',
                     borderRadius: '12px',
                     transition: 'all 0.2s',
-                    background: activeTab === item.id ? 'linear-gradient(to right, #2563eb, #1d4ed8)' : 'transparent',
-                    color: activeTab === item.id ? 'white' : '#374151',
+                    background: active ? 'linear-gradient(to right, #2563eb, #1d4ed8)' : 'transparent',
+                    color: active ? 'white' : '#374151',
                     border: 'none',
                     cursor: 'pointer',
-                    boxShadow: activeTab === item.id ? '0 4px 6px -1px rgba(37, 99, 235, 0.3)' : 'none'
+                    boxShadow: active ? '0 4px 6px -1px rgba(37, 99, 235, 0.3)' : 'none',
+                    textDecoration: 'none'
                   }}
                   onMouseEnter={(e) => {
-                    if (activeTab !== item.id) {
+                    if (!active) {
                       e.currentTarget.style.backgroundColor = '#f9fafb';
                     }
                   }}
                   onMouseLeave={(e) => {
-                    if (activeTab !== item.id) {
+                    if (!active) {
                       e.currentTarget.style.backgroundColor = 'transparent';
                     }
                   }}
                 >
                   <Icon size={20} />
                   <span style={{ fontWeight: '500' }}>{item.label}</span>
-                </button>
+                </Link>
               );
             })}
           </nav>

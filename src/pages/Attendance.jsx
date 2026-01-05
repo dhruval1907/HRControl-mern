@@ -1,11 +1,44 @@
 import React, { useState } from 'react';
+import { Link, useNavigate } from 'react-router-dom'; // Added Link and useNavigate
 import { Calendar, Users, DollarSign, Clock, MapPin, Briefcase, StickyNote, Plus, Calculator, Download, TrendingUp, Building2, Home, Search, Filter, ChevronDown } from 'lucide-react';
 
 export default function Attendance() {
-  const [activeTab, setActiveTab] = useState('attendance');
+  const navigate = useNavigate(); // Add this hook
   const [searchTerm, setSearchTerm] = useState('');
   const [filterStatus, setFilterStatus] = useState('all');
   const [selectedDate, setSelectedDate] = useState('2025-01-04');
+
+  // Get current path for active tab
+  const currentPath = window.location.pathname;
+  
+  // Determine active tab based on current path
+  const getActiveTab = () => {
+    if (currentPath.includes('/dashboard')) return 'home';
+    if (currentPath.includes('/employee')) return 'employees';
+    if (currentPath.includes('/salaries')) return 'salaries';
+    if (currentPath.includes('/attendance')) return 'attendance';
+    if (currentPath.includes('/payroll')) return 'payroll';
+    if (currentPath.includes('/holidays')) return 'holidays';
+    if (currentPath.includes('/sites')) return 'sites';
+    if (currentPath.includes('/departments')) return 'departments';
+    if (currentPath.includes('/notes')) return 'notes';
+    return 'home';
+  };
+
+  const activeTab = getActiveTab();
+
+  // Menu items with proper routing
+  const menuItems = [
+    { id: 'home', label: 'Home', icon: Home, path: '/dashboard' },
+    { id: 'employees', label: 'Employees', icon: Users, path: '/employee' },
+    { id: 'salaries', label: 'Salaries', icon: DollarSign, path: '/salaries' },
+    { id: 'attendance', label: 'Attendance', icon: Clock, path: '/attendance' },
+    { id: 'payroll', label: 'Payroll', icon: TrendingUp, path: '/payroll' },
+    { id: 'holidays', label: 'Holidays', icon: Calendar, path: '/holidays' },
+    { id: 'sites', label: 'Sites', icon: MapPin, path: '/sites' },
+    { id: 'departments', label: 'Departments', icon: Building2, path: '/departments' },
+    { id: 'notes', label: 'Notes', icon: StickyNote, path: '/notes' }
+  ];
 
   // Sample employee data
   const employees = [
@@ -21,18 +54,6 @@ export default function Attendance() {
     { id: 10, name: 'Maria Garcia', department: 'Marketing', status: 'absent', checkIn: '-', checkOut: '-', hours: '-' },
   ];
 
-  const menuItems = [
-    { id: 'home', label: 'Home', icon: Home },
-    { id: 'employees', label: 'Employees', icon: Users },
-    { id: 'salaries', label: 'Salaries', icon: DollarSign },
-    { id: 'attendance', label: 'Attendance', icon: Clock },
-    { id: 'payroll', label: 'Payroll', icon: TrendingUp },
-    { id: 'holidays', label: 'Holidays', icon: Calendar },
-    { id: 'sites', label: 'Sites', icon: MapPin },
-    { id: 'departments', label: 'Departments', icon: Building2 },
-    { id: 'notes', label: 'Notes', icon: StickyNote }
-  ];
-
   const filteredEmployees = employees.filter(emp => {
     const matchesSearch = emp.name.toLowerCase().includes(searchTerm.toLowerCase()) || 
                          emp.department.toLowerCase().includes(searchTerm.toLowerCase());
@@ -44,6 +65,22 @@ export default function Attendance() {
   const absentCount = employees.filter(e => e.status === 'absent').length;
   const totalEmployees = employees.length;
   const attendanceRate = ((presentCount / totalEmployees) * 100).toFixed(1);
+
+  // Logout function
+  const handleLogout = () => {
+    localStorage.removeItem('hrms_auth');
+    localStorage.removeItem('hrms_user');
+    localStorage.removeItem('hrms_role');
+    navigate('/');
+  };
+
+  // Function to check if a menu item is active
+  const isActive = (path) => {
+    if (path === '/dashboard') {
+      return currentPath === path || currentPath === '/';
+    }
+    return currentPath.startsWith(path);
+  };
 
   return (
     <div style={{ display: 'flex', minHeight: '100vh', background: 'linear-gradient(to bottom right, #f9fafb, #f3f4f6)' }}>
@@ -70,10 +107,12 @@ export default function Attendance() {
           <nav style={{ display: 'flex', flexDirection: 'column', gap: '4px' }}>
             {menuItems.map((item) => {
               const Icon = item.icon;
+              const active = isActive(item.path);
+              
               return (
-                <button
+                <Link
                   key={item.id}
-                  onClick={() => setActiveTab(item.id)}
+                  to={item.path}
                   style={{
                     width: '100%',
                     display: 'flex',
@@ -82,26 +121,27 @@ export default function Attendance() {
                     padding: '12px 16px',
                     borderRadius: '12px',
                     transition: 'all 0.2s',
-                    background: activeTab === item.id ? 'linear-gradient(to right, #2563eb, #1d4ed8)' : 'transparent',
-                    color: activeTab === item.id ? 'white' : '#374151',
+                    background: active ? 'linear-gradient(to right, #2563eb, #1d4ed8)' : 'transparent',
+                    color: active ? 'white' : '#374151',
                     border: 'none',
                     cursor: 'pointer',
-                    boxShadow: activeTab === item.id ? '0 4px 6px -1px rgba(37, 99, 235, 0.3)' : 'none'
+                    boxShadow: active ? '0 4px 6px -1px rgba(37, 99, 235, 0.3)' : 'none',
+                    textDecoration: 'none'
                   }}
                   onMouseEnter={(e) => {
-                    if (activeTab !== item.id) {
+                    if (!active) {
                       e.currentTarget.style.backgroundColor = '#f9fafb';
                     }
                   }}
                   onMouseLeave={(e) => {
-                    if (activeTab !== item.id) {
+                    if (!active) {
                       e.currentTarget.style.backgroundColor = 'transparent';
                     }
                   }}
                 >
                   <Icon size={20} />
                   <span style={{ fontWeight: '500' }}>{item.label}</span>
-                </button>
+                </Link>
               );
             })}
           </nav>
@@ -115,7 +155,9 @@ export default function Attendance() {
           <div style={{ fontSize: '14px', color: '#4b5563' }}>
             Email: <span style={{ fontWeight: '600', color: '#1f2937' }}>aadhiavi57@gmail.com</span>
           </div>
-          <button style={{ background: 'linear-gradient(to right, #ef4444, #dc2626)', color: 'white', padding: '10px 32px', borderRadius: '12px', fontWeight: '600', border: 'none', cursor: 'pointer', boxShadow: '0 4px 6px -1px rgba(239, 68, 68, 0.3)', transition: 'all 0.2s' }}
+          <button 
+            onClick={handleLogout}
+            style={{ background: 'linear-gradient(to right, #ef4444, #dc2626)', color: 'white', padding: '10px 32px', borderRadius: '12px', fontWeight: '600', border: 'none', cursor: 'pointer', boxShadow: '0 4px 6px -1px rgba(239, 68, 68, 0.3)', transition: 'all 0.2s' }}
             onMouseEnter={(e) => e.currentTarget.style.boxShadow = '0 10px 15px -3px rgba(239, 68, 68, 0.4)'}
             onMouseLeave={(e) => e.currentTarget.style.boxShadow = '0 4px 6px -1px rgba(239, 68, 68, 0.3)'}>
             Logout
